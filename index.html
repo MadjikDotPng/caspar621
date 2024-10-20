@@ -195,10 +195,14 @@
                     
                     if (final.posts[ipp].file.ext == "webm") {
                         let toBeDisplayed = final.posts[i++].file.url;
-                        display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
+                        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
+
+                        //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
                     } else {
                         let toBeDisplayed = final.posts[i++].sample.url;
-                        display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+                        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+
+                        //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
                     }
                     
                     // 75 e6 posts per page

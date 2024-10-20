@@ -44,7 +44,7 @@
             const username = "caspar621";
             const apiKey = "W8r6nDU97jXJfdhEfkxNpdjT"; // Not an actual API key lol
             const theurl = window.location.href;
-            function parse_url(url) {
+            /*function parse_url(url) {
             var pattern = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
             var matches =  url.match(pattern);
             return {
@@ -58,7 +58,8 @@
         console.log(parse_url(theurl));
         var id = parse_url(theurl).query;
         console.log(id)
-        var ret = id.replace('id=','');
+        var ret = id.replace('id=','');*/
+        var ret = localStorage.getItem(lastid)
         load(ret);
 
         async function load(id) {
