@@ -59,7 +59,7 @@
         var id = parse_url(theurl).query;
         console.log(id)
         var ret = id.replace('id=','');*/
-        var ret = localStorage.getItem(lastid)
+        var ret = localStorage.getItem("lastid");
         load(ret);
 
         async function load(id) {
