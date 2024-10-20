@@ -57,6 +57,7 @@
         }
         console.log(parse_url(window.location.href));
         var id = parse_url(window.location.href).query;
+        console.log(id)
         var ret = id.replace('id=','');
         load(ret);
 
