@@ -43,7 +43,7 @@
         <script>
             const username = "caspar621";
             const apiKey = "W8r6nDU97jXJfdhEfkxNpdjT"; // Not an actual API key lol
-
+            const theurl = window.location.href;
             function parse_url(url) {
             var pattern = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
             var matches =  url.match(pattern);
@@ -55,8 +55,8 @@
                 fragment: matches[9]
             };
         }
-        console.log(parse_url(window.location.href));
-        var id = parse_url(window.location.href).query;
+        console.log(parse_url(theurl));
+        var id = parse_url(theurl).query;
         console.log(id)
         var ret = id.replace('id=','');
         load(ret);
