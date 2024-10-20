@@ -74,6 +74,17 @@
             currenttag = "";
             var checkBox = document.getElementById("sfw");
             var loginopen = false;
+            var mainsearch = document.getElementById("tagz")
+
+            mainsearch.addEventListener("keyup", function(event) {
+                // Number 13 is the "Enter" key on the keyboard
+                if (event.keyCode === 13) {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    document.getElementById("s").click();
+                }
+            });
 
             if (username == "caspar621") {
                 document.getElementById("perks").innerHTML = "If you want access to favorites, NSFW, <br> and post interactions, sign in below.";
