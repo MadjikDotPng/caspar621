@@ -1,0 +1,214 @@
+<html>
+    <head>
+        <script src="module.js" type="module"></script>
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="logincontainer" id="loginc">
+            <div id="login" class="login">
+                <p>Link your e621 account.</p>
+                <p class="subheader">Gain access to NSFW, favorites, interacting with posts, and more.</p>
+                <input type="text" id="user" class="loginuser" placeholder="Username">
+                <input type="text" id="apikey" class="loginuser" placeholder="E621 api key">
+                <button id="loginbutton" class="button">Save</button>
+                <button id="reset" class="button">Reset</button>
+            </div>
+        </div>
+        <!-- <div id="header">
+            <p class="Header" style="float:left">Caspar-621</p> <span class="left"><input type="text" id="tagz"> <button id="s">Search</button><input type="checkbox" id="sfw"></span>
+        </div> -->
+
+        <div class="sidenav">
+            <!-- <p class="Header">Caspar621</p> -->
+            <div class="hcontainer">
+                <img src="img/logo.png" class="headerimg">
+            </div>
+            <p class="subheading">Control Box</p>
+            <input type="text" id="tagz"> 
+                <button id="s" class="searchbutton" spellcheck="false" autocomplete="false" autocapitalize="false">Search</button>
+                <input style="display:none;" type="checkbox" id="sfw">
+                <br>
+                <button id="p" class="button">Previous</button> <button id="n" class="button">Next</button> 
+                <br><button id="b" class="b, button">Load Posts</button> <button id="u" class="button">Unload</button>
+                <br>
+                <br>
+                <div class="controlbox">
+                    <p id="safet">Safe Presets</p>
+                    <p class="subheading" id="safesub">rating:safe</p>
+                    <button onclick="load(1,'rating:s')">New</button>
+                    <button onclick="/*stop()*/ load(1,'rating:s+order:score')">Top</button>
+                    <button onclick="load(1,'rating:s+order:rating')">Hot</button>
+                    <button onclick="load(1,'rating:s+order:score+aak_(arknights)')">Debug</button>
+                    <br>
+                    <br>
+                    <div id="nsfw">
+                        <p>Full Presets</p>
+                        <p class="subheading">No Blacklist/Filter</p>
+                        <button onclick="load(1,'')">New</button>
+                        <button onclick="load(1,'order:score')">Top</button>
+                        <button onclick="load(1,'order:rating')">Hot</button>
+                        <button onclick="favorites()">Favs</button>
+                    </div>
+                </div>
+
+                <div class="userbox">
+                    <p id="userid" class="logged">Currently logged into </p>
+                    <p class="perks" id="perks">Could not figure out what account you are using.</p>
+                    <button onclick="openlogin()">Account Manager</button>
+                </div>
+          </div>
+
+        <div id="display" class="display"></div>
+        <p class="intro" id="intro">Search posts or choose a preset.</p>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
+        <script>
+            
+            const username = localStorage.getItem("username") || "caspar621";
+            const apiKey = localStorage.getItem("key") || "W8r6nDU97jXJfdhEfkxNpdjT"; // Not an actual API key lol
+            let display = "";
+            var pageNo = 1;
+            var lastId = 0;
+            currenttag = "";
+            var checkBox = document.getElementById("sfw");
+            var loginopen = false;
+
+            if (username == "caspar621") {
+                document.getElementById("perks").innerHTML = "If you want access to favorites, NSFW, <br> and post interactions, sign in below.";
+                document.getElementById("nsfw").style.display = "none";
+                document.getElementById("safet").innerHTML = "Default Presets";
+                document.getElementById("userid").innerHTML = "Logged out";
+            } else {
+                document.getElementById("userid").innerHTML = "Logged into " + username;
+                document.getElementById("perks").innerHTML = "You are successfully using <br> your own account!";
+            }
+
+            function openlogin() {
+                if (loginopen) {
+                    document.getElementById("loginc").style.display = "none";
+                    document.getElementById("login").style.display = "none";
+                    loginopen = false;
+                } else {
+                    document.getElementById("loginc").style.display = "flex";
+                    document.getElementById("login").style.display = "block";
+                    document.getElementById("intro").style.display = "none";
+
+                    loginopen = true;
+                }
+            }
+
+            document.getElementById("loginbutton").addEventListener("click", () => {
+                var newkey = document.getElementById("apikey").value;
+                console.log(newkey)
+                localStorage.setItem("key", newkey);
+                var newuser = document.getElementById("user").value;
+                console.log(newuser)
+                localStorage.setItem("username", newuser);
+                location.reload();
+            });
+
+            function favorites() {
+                load(1,'fav:' + username)
+            }
+
+            document.getElementById("reset").addEventListener("click", () => {
+                localStorage.setItem("key", "");
+                localStorage.setItem("username", "");
+                location.reload();
+            });
+
+            document.getElementById("b").addEventListener("click", () => {
+                pageNo += 1;
+                load(pageNo, "");
+            });
+
+            document.getElementById("s").addEventListener("click", () => {
+                display = "";
+                pageNo = 1
+                load(pageNo, "");
+            });
+
+            document.getElementById("n").addEventListener("click", () => {
+                
+                pageNo += 1;
+                display = "";
+                console.log("Current tags are: " + currenttag);
+                load(pageNo, currenttag);
+            });
+
+            document.getElementById("p").addEventListener("click", () => {
+                pageNo -= 1;
+                display = "";
+                console.log("Current tags are: " + currenttag);
+                load(pageNo, currenttag);
+            });
+
+            document.getElementById("u").addEventListener("click", () => {
+                display = "";
+                document.getElementById("display").innerHTML = "";
+            });
+
+            /* function stop() {
+                currenttag = 'rating:s+order:score';
+                console.log(currenttag);
+                load(0,currenttag)
+            } */
+
+            function openup(curl) {
+                window.open(curl, "myWindow", 'width=1200,height=1000');
+            }
+
+            async function load(page, tag) {
+                document.getElementById("intro").style.display = "none";
+                let response = "";
+                currenttag = tag;
+                console.log("Currenttag before loading: " + currenttag);
+                console.log("Page before loading: " + page);
+                goTo = pageNo.toString();
+                let getTags = document.getElementById('tagz').value.replace(/ /g, '+') | "";
+                if (username == "caspar621"){
+                    response = await fetch("https://e621.net/posts.json?page=" + goTo + "&tags=rating:s+" + document.getElementById('tagz').value.replace(/ /g, '+') + tag, {
+                    headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
+                    });
+                } else {
+                    /* response = await fetch("https://e621.net/posts.json?page=" + goTo + "&tags=~type:jpg+~type:png+" + document.getElementById('tagz').value.replace(/ /g, '+') + tag, {
+                    headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
+                    }); */
+
+                    response = await fetch("https://e621.net/posts.json?page=" + goTo + "&tags=" + document.getElementById('tagz').value.replace(/ /g, '+') + tag, {
+                    headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
+                    });
+                }
+                const final = await response.json();
+                console.log(final);
+                for (let i = 0; i < 20; i++) {
+                final.posts.map(() => {
+                    ipp = i
+                    let imgid = final.posts[ipp].id;
+                    let lastId = final.posts[19].id;
+                    console.log(lastId);
+                    // display += "<a href=" + toBeDisplayed + " target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+                    // display += "<a href='/imgload.html?id=" + imgid + "' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+                    // display += "<a onclick='openup(`imgload.html?id=" + imgid + "`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+                    
+                    if (final.posts[ipp].file.ext == "webm") {
+                        let toBeDisplayed = final.posts[i++].file.url;
+                        display += "<a onclick='openup(`imgload.html?id=" + imgid + "`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
+                    } else {
+                        let toBeDisplayed = final.posts[i++].sample.url;
+                        display += "<a onclick='openup(`imgload.html?id=" + imgid + "`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+                    }
+                    
+                    // 75 e6 posts per page
+                    // 131 e6 being loaded for some damn reason
+
+                });
+
+                document.getElementById("display").innerHTML = display;
+            }};
+        </script>
+    </body>
+</html>

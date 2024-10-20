@@ -1,0 +1,8 @@
+{
+    "name": "e621test",
+    "version": "1.0.0",
+    "author": "koaku",
+    "dependencies": {
+        "vite": "^5.2.11"
+    }
+}

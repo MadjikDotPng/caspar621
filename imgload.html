@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="imgload.css">
+
+    </head>
+
+    <body>
+        <div class="titlebox"></div>
+        <div class="left">
+            <div id="display">
+            </div>
+            <p id="sampletxt">Viewing the sample. View the </p>
+        </div>
+
+        <div class="right">
+            <p>
+            <br>
+            <p id="imagetitle" class="imagetitle">
+                No Description
+            </p>
+            <br>
+            <p id="fav">Favorites: N/A</p>
+            <p id="idd">Id: N/A</p>
+            <p id="rate">Rating: Currently Broken</p>
+            <p id="stotal">Score: N/A</p>
+            <p id="sup" class="scores">Up: N/A</p>
+            <p id="sdown" class="scores">Down: N/A</p>
+            <p id="date">Created: N/A</p>
+            <p id="update" class="scores">Updated: N/A</p>
+            <p id="size">Size: N/A</p>
+            <p id="ssize" class="scores">Size: N/A</p>
+            <br><p class="imagetitle">Tags</p>
+            <br>
+            <p>Artist(s):</p><p class="scores" id="artist"> N/A</p>
+            <p>Character(s):</p><p class="scores" id="character"> N/A</p>
+            <p>Copyright:</p><p class="scores" id="copy"> N/A</p> 
+            <p>Species:</p><p class="scores" id="species"> N/A</p>
+            <p>General:</p><p class="scores" id="gen"> N/A</p>
+            <p>Meta:</p><p class="scores" id="meta"> N/A</p> 
+        </p>
+        </div>
+
+        <script>
+            const username = "caspar621";
+            const apiKey = "W8r6nDU97jXJfdhEfkxNpdjT"; // Not an actual API key lol
+
+            function parse_url(url) {
+            var pattern = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+            var matches =  url.match(pattern);
+            return {
+                scheme: matches[2],
+                authority: matches[4],
+                path: matches[5],
+                query: matches[7],
+                fragment: matches[9]
+            };
+        }
+        console.log(parse_url(window.location.href));
+        var id = parse_url(window.location.href).query;
+        var ret = id.replace('id=','');
+        load(ret);
+
+        async function load(id) {
+                let response = "";
+                response = await fetch("https://e621.net/posts/" + id + ".json", {
+                headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
+                });
+
+                const final = await response.json();
+                console.log(final);
+                document.getElementById("imagetitle").innerHTML = final.post.description;
+                document.getElementById("sampletxt").innerHTML = "You are viewing the sample. <a href='" + final.post.file.url + "' target='_blank'>Click here</a> to view the full image.";
+                document.getElementById("fav").innerHTML = "Favorites: " + final.post.fav_count;
+                document.getElementById("idd").innerHTML = "Id: " + final.post.id;
+                document.getElementById("stotal").innerHTML = "Score: " + final.post.score.total;
+                document.getElementById("sup").innerHTML = "Up: " + final.post.score.up;
+                document.getElementById("sdown").innerHTML = "Down: " + final.post.score.down;
+                datef = new Date(final.post.created_at);
+                document.getElementById("date").innerHTML = "Created: " + datef;
+                udatef = new Date(final.post.created_at);
+                document.getElementById("update").innerHTML = "Updated: " + udatef;
+                document.getElementById("size").innerHTML = "Size: " + final.post.file.width + " x " + final.post.file.height;
+                document.getElementById("ssize").innerHTML = "Sample Size: " + final.post.sample.width + " x " + final.post.sample.height;
+                /* if (final.post.rating = "s") {
+                    document.getElementById("rate").innerHTML = "Rating: Safe";
+                } elif {
+
+                } */
+
+                document.getElementById("artist").innerHTML = final.post.tags.artist;
+                document.getElementById("character").innerHTML = final.post.tags.character;
+                document.getElementById("copy").innerHTML = final.post.tags.copyright;
+                document.getElementById("species").innerHTML = final.post.tags.species;
+                document.getElementById("gen").innerHTML = final.post.tags.general;
+                document.getElementById("meta").innerHTML = final.post.tags.meta;
+
+                if (final.post.file.ext == "webm") {
+                    document.getElementById("display").innerHTML += "<video controls lazyload><source src=" + final.post.file.url + " type='video/webm'></video>"
+
+                } else {
+                    document.getElementById("display").innerHTML += "<img class='lazyload' src='" + final.post.sample.url + "'/>";
+                }
+            };
+        </script>
+    </body>
+</html>
