@@ -21,11 +21,10 @@ body {
     display: flexbox;
     font-family: mono;
     margin: 0;
-    overflow: auto;
     line-height: 1;
     white-space: normal;
     word-wrap: break-word;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 img {

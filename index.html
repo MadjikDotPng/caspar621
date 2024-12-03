@@ -44,6 +44,12 @@
                     <button onclick="/*stop()*/ load(1,'rating:s+order:score')">Top</button>
                     <button onclick="load(1,'rating:s+order:rank')">Hot</button>
                     <button onclick="load(1,'rating:s+order:score+aak_(arknights)')">Debug</button>
+                    <!-- do the stuff -->
+                    <button onclick="load(1,'rating:s+')">Pics</button>
+                    <button onclick="/*stop()*/ load(1,'rating:s+order:score')">Videos</button>
+                    <button onclick="load(1,'rating:s+order:rank')">Gifs</button>
+                    <br><button onclick="load(1,'rating:s+order:score+aak_(arknights)')">Top Pics</button>
+                    <button onclick="load(1,'rating:s+order:score+aak_(arknights)')">Top Videos</button>
                     <br>
                     <br>
                     <div id="nsfw">
@@ -207,13 +213,28 @@
                     // display += "<a onclick='openup(`imgload.html?id=" + imgid + "`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
                     
                     if (final.posts[ipp].file.ext == "webm") {
-                        let toBeDisplayed = final.posts[i++].file.url;
-                        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
-
-                        //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
-                    } else {
+                        //let toBeDisplayed = final.posts[i++].file.url;
+                        //display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
                         let toBeDisplayed = final.posts[i++].sample.url;
-                        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+                        var downv = final.posts[ipp].score.down;
+                        var nonhyphen = downv.toString().split('-').join('');
+                        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
+                        //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
+                    } else if (final.posts[ipp].file.ext == "gif") {
+                        var downv = final.posts[ipp].score.down;
+                        var nonhyphen = downv.toString().split('-').join('');
+                        let toBeDisplayed = final.posts[i++].sample.url;
+                        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #372c6b;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
+                    } else if (final.posts[ipp].file.ext == "swf") {
+                        var downv = final.posts[ipp].score.down;
+                        var nonhyphen = downv.toString().split('-').join('');
+                        let toBeDisplayed = final.posts[i++].sample.url;
+                        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon'><img class='lazyload' src='/img/flash.png'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
+                    } else {
+                        var downv = final.posts[ipp].score.down;
+                        var nonhyphen = downv.toString().split('-').join('');
+                        let toBeDisplayed = final.posts[i++].sample.url;
+                        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
 
                         //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
                     }

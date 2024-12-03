@@ -37,32 +37,28 @@ body {
     max-width: fit-content;
     margin-left: 240px;
     margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
-.display > a > img {
-    max-height: 40vh;
-    position: relative;
-    padding: 2em;
+.imgcon {
     background: #000;
     margin: 5px;
+    transition: .3s;
     border-width: 1px;
     border-color: var(--resultborder);
     border-style: solid;
-    transition: .3s;
-    max-width: 80vw;
 }
 
-.display > a > video {
-    max-height: 40vh;
-    position: relative;
-    padding: 2em;
+.imgcon > img {
+    padding-top: 2em;
+    padding-right: 2em;
+    padding-left: 2em;
     background: #000;
-    margin: 5px;
-    border-width: 1px;
-    border-color: var(--resultborder);
-    border-style: solid;
     transition: .3s;
-    max-width: 80vw;
+    max-width: 80vh;
+    max-height: 40vh;
 }
 
 #header {
@@ -281,4 +277,22 @@ button:hover {
 .logged {
     margin: 5px;
     margin-top: 20px;
+}
+
+#showvideos {
+    height: 15px;
+}
+
+.checkb {
+    height: 10px;
+    font-size: 10px;
+    line-height: 0px;
+    margin: 10px;
+    text-align: center;
+}
+
+.checks {
+    width: 200px;
+    text-align: center;
+    padding: 0;
 }
