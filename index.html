@@ -181,6 +181,8 @@
             document.getElementById("u").addEventListener("click", () => {
                 display = "";
                 document.getElementById("display").innerHTML = "";
+                document.getElementById("intro").style.display = "block";
+                document.getElementById("intro").innerHTML = "No posts to display.";
             });
 
             /* function stop() {
@@ -194,7 +196,8 @@
             }
 
             async function load(page, tag) {
-                document.getElementById("intro").style.display = "none";
+                document.getElementById("intro").style.display = "block";
+                document.getElementById("intro").innerHTML = "Loading Posts...";
                 let response = "";
                 currenttag = tag;
                 console.log("Currenttag before loading: " + currenttag);
@@ -218,6 +221,7 @@
                 console.log(final);
                 for (let i = 0; i < 20; i++) {
                 final.posts.map(() => {
+                    document.getElementById("intro").style.display = "none";
                     ipp = i
                     let imgid = final.posts[ipp].id;
                     let lastId = final.posts[19].id;
