@@ -97,7 +97,7 @@
                 document.getElementById("meta").innerHTML = final.post.tags.meta;
 
                 if (final.post.file.ext == "webm") {
-                    document.getElementById("display").innerHTML += "<video controls lazyload><source src=" + final.post.file.url + " type='video/webm'></video>"
+                    document.getElementById("display").innerHTML += "<video controls lazyload loop><source src=" + final.post.file.url + " type='video/webm'></video>"
 
                 } else {
                     document.getElementById("display").innerHTML += "<img class='lazyload' src='" + final.post.sample.url + "'/>";

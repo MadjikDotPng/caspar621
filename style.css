@@ -10,6 +10,28 @@
     src: url(fonts/para.ttf);
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #111; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #222; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #333; 
+    cursor: -webkit-grab; 
+    cursor: grab;
+}
+
 body {
     background: var(--bg);
     color: var(--text);
@@ -40,6 +62,8 @@ body {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .imgcon {
@@ -51,6 +75,10 @@ body {
     border-style: solid;
 }
 
+.imgcon:hover {
+    cursor: default;    
+}
+
 .imgcon > img {
     padding-top: 2em;
     padding-right: 2em;
@@ -59,6 +87,7 @@ body {
     transition: .3s;
     max-width: 60vh;
     max-height: 40vh;
+    /* image-rendering: pixelated; */
 }
 
 #header {
@@ -138,13 +167,13 @@ input:focus {
 .loginuser {
     outline: none;
     box-shadow: none;
-    width: 500px;
+    width: 80%;
     height: 20px;
     border-top-right-radius: 25px;
     border-bottom-left-radius: 25px;
-    background: var(--login);
+    background: #222;
     border-style: none;
-    color: #222;
+    color: #ddd;
     text-align: center;
     margin: 6px;
 }
@@ -188,7 +217,7 @@ button:hover {
     box-shadow: none;
     border-style: none;
     color: var(--buttontext);
-    width: 50px;
+    min-width: 50px;
 }
 
 .controlbox > div > button {
@@ -200,7 +229,7 @@ button:hover {
     box-shadow: none;
     border-style: none;
     color: var(--buttontext);
-    width: 50px;
+    min-width: 50px;
 }
 
 .userbox > button {
@@ -257,7 +286,7 @@ button:hover {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: var(--navbartop);
+    background: #111;
     width: 30vw;
     height: 30vh;
     display: none;
