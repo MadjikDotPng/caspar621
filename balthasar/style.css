@@ -80,10 +80,9 @@ body {
 }
 
 .imgcon > img {
-    /* padding-top: 2em;
+    padding-top: 2em;
     padding-right: 2em;
-    padding-left: 2em;*/
-    padding: 2em;
+    padding-left: 2em;
     background: #000;
     transition: .3s;
     max-width: 60vh;
@@ -179,7 +178,16 @@ input:focus {
     margin: 6px;
 }
 
-
+#blacklist {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #111;
+    width: 30vw;
+    height: 30vh;
+    display: none;
+}
 
 button:hover {
     cursor: pointer;

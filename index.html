@@ -21,6 +21,12 @@
                 <button id="close" class="button">Close</button>
             </div>
         </div>
+            <div id="blacklist">
+                <textarea placeholder="No Items." class="blackinput" id="blackinput" rows="4" cols="30"></textarea>
+                <p style="font-size: 12px;">Format your blacklist starting with "+-" then <br>add "+-" in between every tag. Example: <br>"+-feral+-feline+-canine</p>
+                <button id="save" class="button">Save</button>
+            </div>
+        </div>
         <!-- <div id="header">
             <p class="Header" style="float:left">Caspar-621</p> <span class="left"><input type="text" id="tagz"> <button id="s">Search</button><input type="checkbox" id="sfw"></span>
         </div> -->
@@ -75,6 +81,7 @@
                     <p id="userid" class="logged">Currently logged into </p>
                     <p class="perks" id="perks">Could not figure out what account you are using.</p>
                     <button onclick="openlogin()">Account Manager</button>
+                    <button onclick="openblack()">Edit Blacklist</button>
                 </div>
           </div>
 
@@ -92,6 +99,9 @@ currenttag = "";
 var checkBox = document.getElementById("sfw");
 var loginopen = false;
 var mainsearch = document.getElementById("tagz")
+var blacklist = localStorage.getItem("bblacklist") || "+-scat+-feces+-urine+-watersports";
+document.getElementById("blackinput").value = blacklist;
+console.log(blacklist);
 
 mainsearch.addEventListener("keyup", function(event) {
     // Number 13 is the "Enter" key on the keyboard
@@ -126,6 +136,27 @@ function openlogin() {
         loginopen = true;
     }
 }
+
+function openblack() {
+    if (loginopen) {
+        document.getElementById("loginc").style.display = "none";
+        document.getElementById("blacklist").style.display = "none";
+        loginopen = false;
+    } else {
+        document.getElementById("loginc").style.display = "flex";
+        document.getElementById("blacklist").style.display = "block";
+        document.getElementById("intro").style.display = "none";
+
+        loginopen = true;
+    }
+}
+
+document.getElementById("save").addEventListener("click", () => {
+    var newblack = document.getElementById("blackinput").value;
+    console.log(newblack)
+    localStorage.setItem("blacklist", newblack);
+    location.reload();
+});
 
 document.getElementById("loginbutton").addEventListener("click", () => {
     var newkey = document.getElementById("apikey").value;
@@ -206,7 +237,7 @@ async function load(page, tag) {
     goTo = pageNo.toString();
     let getTags = document.getElementById('tagz').value.replace(/ /g, '+') | "";
     if (username == "caspar621"){
-        response = await fetch("https://e621.net/posts.json?page=" + goTo + "&tags=rating:s+" + document.getElementById('tagz').value.replace(/ /g, '+').replace("y$", '_yesteryears_ago').replace("%p", ' ~type:png ~type:jpg') + tag, {
+        response = await fetch("https://e621.net/posts.json?page=" + goTo + "&tags=rating:s+" + document.getElementById('tagz').value.replace(/ /g, '+').replace("y$", '_yesteryears_ago').replace("%p", ' ~type:png ~type:jpg') + tag + blacklist, {
         headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
         });
     } else {
@@ -214,7 +245,7 @@ async function load(page, tag) {
         headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
         }); */
 
-        response = await fetch("https://e621.net/posts.json?page=" + goTo + "&tags=" + document.getElementById('tagz').value.replace(/ /g, '+').replace("y$", '_yesteryears_ago').replace("%p", ' ~type:png ~type:jpg') + tag, {
+        response = await fetch("https://e621.net/posts.json?page=" + goTo + "&tags=" + document.getElementById('tagz').value.replace(/ /g, '+').replace("y$", '_yesteryears_ago').replace("%p", ' ~type:png ~type:jpg') + tag + blacklist, {
         headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
         });
     }
@@ -237,18 +268,23 @@ async function load(page, tag) {
             let toBeDisplayed = final.posts[i++].sample.url;
             var downv = final.posts[ipp].score.down;
             var nonhyphen = downv.toString().split('-').join('');
-            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
+            if (final.posts[ipp].tags.artist.includes('sound_warning') || final.posts[ipp].tags.meta.includes('sound')) {
+                display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span><span style='color: #555;'> | Sound</span></p></div></a>"
+            } else {
+                display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
+            };
+            
             //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
         } else if (final.posts[ipp].file.ext == "gif") {
             var downv = final.posts[ipp].score.down;
             var nonhyphen = downv.toString().split('-').join('');
             let toBeDisplayed = final.posts[i++].sample.url;
-            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #372c6b;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
+            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #372c6b;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
         } else if (final.posts[ipp].file.ext == "swf") {
             var downv = final.posts[ipp].score.down;
             var nonhyphen = downv.toString().split('-').join('');
             let toBeDisplayed = final.posts[i++].sample.url;
-            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #555;'><img class='lazyload' src='/img/flash.png'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
+            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #555;'><img class='lazyload' src='/img/flash.png'/><p><span style='color: #555;'>Flash | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
         } else {
             var downv = final.posts[ipp].score.down;
             var nonhyphen = downv.toString().split('-').join('');

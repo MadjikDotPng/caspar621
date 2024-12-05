@@ -10,7 +10,7 @@
     </head>
 
     <body>
-        <div class="logincontainer" id="loginc">
+        <div class="logincontainer" id="loginc" style="display:none;">
             <div id="login" class="login">
                 <p>Link your e621 account.</p>
                 <p class="subheader">Gain access to NSFW, favorites, interacting with posts, and more.</p>
@@ -19,6 +19,11 @@
                 <button id="loginbutton" class="button">Save</button>
                 <button id="reset" class="button">Reset</button>
                 <button id="close" class="button">Close</button>
+            </div>
+            <div id="blacklist">
+                <textarea placeholder="No Items." class="blackinput" id="blackinput" rows="4" cols="30"></textarea>
+                <p style="font-size: 12px;">Format your blacklist starting with "+-" then <br>add "+-" in between every tag. Example: <br>"+-feral+-feline+-canine</p>
+                <button id="save" class="button">Save</button>
             </div>
         </div>
         <!-- <div id="header">
@@ -57,6 +62,7 @@
                 <div class="userbox">
                     <p class="logged">Thank you for using Balthasar~</p>
                     <p class="perks">Your feedback means a lot!</p>
+                    <button onclick="openblack()">Edit Blacklist</button>
                 </div>
           </div>
 
@@ -75,6 +81,9 @@ var checkBox = document.getElementById("sfw");
 var loginopen = false;
 var mainsearch = document.getElementById("tagz");
 var search = "";
+var blacklist = localStorage.getItem("bblacklist") || "+-scat+-feces+-urine+-watersports";
+document.getElementById("blackinput").value = blacklist;
+console.log(blacklist);
 
 mainsearch.addEventListener("keyup", function(event) {
     // Number 13 is the "Enter" key on the keyboard
@@ -85,6 +94,20 @@ mainsearch.addEventListener("keyup", function(event) {
         document.getElementById("s").click();
     }
 });
+
+function openblack() {
+    if (loginopen) {
+        document.getElementById("loginc").style.display = "none";
+        document.getElementById("blacklist").style.display = "none";
+        loginopen = false;
+    } else {
+        document.getElementById("loginc").style.display = "flex";
+        document.getElementById("blacklist").style.display = "block";
+        document.getElementById("intro").style.display = "none";
+
+        loginopen = true;
+    }
+}
 
 /* if (username == "caspar621") {
     document.getElementById("perks").innerHTML = "If you want access to favorites, NSFW, <br> and post interactions, sign in below.";
@@ -109,6 +132,13 @@ function openlogin() {
         loginopen = true;
     }
 }
+
+document.getElementById("save").addEventListener("click", () => {
+    var newblack = document.getElementById("blackinput").value;
+    console.log(newblack)
+    localStorage.setItem("bblacklist", newblack);
+    location.reload();
+});
 
 /* document.getElementById("loginbutton").addEventListener("click", () => {
     var newkey = document.getElementById("apikey").value;
@@ -191,7 +221,7 @@ async function load(tag) {
     currenttag = tag;
     console.log("goto: " + goTo)
     //let getTags = document.getElementById('tagz').value.replace(/ /g, '+') | "";
-    response = await fetch("https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&pid=" + goTo + "&json=1&limit=50&tags=" + tag, {
+    response = await fetch("https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&pid=" + goTo + "&json=1&limit=50&tags=" + tag + blacklist, {
     //headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
     });
     const final = await response.json();
@@ -205,9 +235,22 @@ async function load(tag) {
         //console.log(lastId);
         //let toBeDisplayed = final[i++].sample_url;
         //    display += "<div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/></div>"
-        
-        let toBeDisplayed = final[i++].sample_url;
-        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`imgload.html`);' target='_blank'><div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/></div></a>"
+        if (final[i].file_url.includes(".mp4") || final[i].file_url.includes(".webm")) {
+            if (final[i].tags.includes("sound")) {
+                let toBeDisplayed = final[i].sample_url;
+                display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>" + final[i].score + "</span><span style='color: #555;'> | Sound</span></p></div></a>"
+            } else {
+                let toBeDisplayed = final[i].sample_url;
+                display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>" + final[i].score + "</span></p></div></a>"
+            }
+            
+        } else if (final[i].file_url.includes(".gif")) {
+            let toBeDisplayed = final[i].sample_url;
+        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #372c6b;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>" + final[i].score + "</span></p></div></a>"
+        } else {
+            let toBeDisplayed = final[i].sample_url;
+        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`imgload.html`);' target='_blank'><div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>" + final[i].score + "</span></p></div></a>"
+        }
         
         
             // display += "<a href=" + toBeDisplayed + " target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"

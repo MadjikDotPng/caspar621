@@ -292,6 +292,17 @@ button:hover {
     display: none;
 }
 
+#blacklist {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #111;
+    width: 30vw;
+    height: 30vh;
+    display: none;
+}
+
 .navfooter {
 
 }
