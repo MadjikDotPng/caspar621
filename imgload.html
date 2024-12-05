@@ -1,7 +1,8 @@
 <html>
     <head>
         <link rel="stylesheet" href="imgload.css">
-
+        <link rel="icon" href="favicon.png">
+        <title>Loading Post... | Caspar621</title>
     </head>
 
     <body>
@@ -90,6 +91,11 @@
                 } */
 
                 document.getElementById("artist").innerHTML = final.post.tags.artist;
+                if (final.post.description == "") {
+                    document.title = "Post by " + final.post.tags.artist + " | Caspar621"; 
+                } else {
+                    document.title = final.post.description + " | Caspar621"; 
+                }   
                 document.getElementById("character").innerHTML = final.post.tags.character;
                 document.getElementById("copy").innerHTML = final.post.tags.copyright;
                 document.getElementById("species").innerHTML = final.post.tags.species;

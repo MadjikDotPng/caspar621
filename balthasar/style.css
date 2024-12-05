@@ -1,0 +1,327 @@
+@import url(themes/theme.css);
+
+@font-face {
+    font-family: main;
+    src: url(fonts/main.ttf);
+}
+
+@font-face {
+    font-family: para;
+    src: url(fonts/para.ttf);
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #111; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #222; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #333; 
+    cursor: -webkit-grab; 
+    cursor: grab;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    display: flexbox;
+    margin: 0;
+    text-align: center;
+    font-family: "para", sans-serif;
+}
+
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 240px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: var(--navbar); /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    /* padding-top: 20px; */
+  }
+
+.display {
+    width: 90vw;
+    text-align: center;
+    max-width: fit-content;
+    margin-left: 240px;
+    margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.imgcon {
+    background: #000;
+    margin: 5px;
+    transition: .3s;
+    border-width: 1px;
+    border-color: var(--resultborder);
+    border-style: solid;
+}
+
+.imgcon:hover {
+    cursor: default;    
+}
+
+.imgcon > img {
+    padding-top: 2em;
+    padding-right: 2em;
+    padding-left: 2em;
+    background: #000;
+    transition: .3s;
+    max-width: 60vh;
+    max-height: 40vh;
+    /* image-rendering: pixelated; */
+}
+
+#header {
+    overflow: hidden;
+    background-color: #222;
+    display: block;
+    margin: 0;
+    padding-left: 3em;
+}
+
+.subheader {
+    font-size: 12px;
+    padding: none;
+    margin: none;
+    color: var(--subheader)
+}
+
+.left {
+    float: right;
+    margin-top: 1%;
+    padding-right: 3em;
+}
+
+.header {
+    font-family: main;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.headerimg {
+    height: 20px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    text-align: center;
+    padding-top: 18px;
+}
+
+.hcontainer {
+    background: #577553;
+    height: 50px;
+}
+
+
+#s {
+    border-bottom-left-radius: 25px;
+    width: 200px;;
+    outline: none;
+    background: var(--button);
+    box-shadow: none;
+    border-style: none;
+    color: var(--buttontext);
+    font-family: "para", sans-serif;
+    user-select: none;
+    
+}
+
+#s:focus {
+    background: var(--button);
+}
+
+input {
+    outline: none;
+    box-shadow: none;
+    width: 200px;
+    border-top-right-radius: 25px;
+    background: var(--button);
+    border-style: none;
+    color: var(--buttontext);
+}
+
+input:focus {
+    outline: none;
+}
+
+.loginuser {
+    outline: none;
+    box-shadow: none;
+    width: 80%;
+    height: 20px;
+    border-top-right-radius: 25px;
+    border-bottom-left-radius: 25px;
+    background: #222;
+    border-style: none;
+    color: #ddd;
+    text-align: center;
+    margin: 6px;
+}
+
+
+
+button:hover {
+    cursor: pointer;
+}
+
+.b {
+    text-align: center;
+}
+
+.button {
+    outline: none;
+    background: var(--button);
+    box-shadow: none;
+    border-style: none;
+    color: var(--buttontext);
+    margin-top: 0.5em;
+    margin-bottom: 0em;
+    width: 100px;
+    font-family: "para", sans-serif;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.controlbox {
+    width: 240px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.controlbox > button {
+    margin-top: 5px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    outline: none;
+    background: var(--button);
+    box-shadow: none;
+    border-style: none;
+    color: var(--buttontext);
+    min-width: 50px;
+}
+
+.controlbox > div > button {
+    margin-top: 5px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    outline: none;
+    background: var(--button);
+    box-shadow: none;
+    border-style: none;
+    color: var(--buttontext);
+    min-width: 50px;
+}
+
+.userbox > button {
+    margin-top: 5px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    outline: none;
+    background: var(--button);
+    box-shadow: none;
+    border-style: none;
+    color: var(--buttontext);
+}
+
+.userbox {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    background-color: var(--footer);
+    color: white;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.controlbox > p {
+    margin: 0;
+}
+
+.controlbox > div > p {
+    margin: 0;
+}
+
+.subheading {
+    font-size: 10px;
+    color: var(--subheader);
+}
+
+.perks {
+    font-size: 10px;
+    color: var(--subheader);
+    margin: 0;
+    text-align: center;
+}
+
+.logincontainter {
+    z-index: 10000000;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.login {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #111;
+    width: 30vw;
+    height: 30vh;
+    display: none;
+}
+
+.navfooter {
+
+}
+
+.intro {
+    position: absolute;
+    left: 55%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logged {
+    margin: 5px;
+    margin-top: 20px;
+}
+
+#showvideos {
+    height: 15px;
+}
+
+.checkb {
+    height: 10px;
+    font-size: 10px;
+    line-height: 0px;
+    margin: 10px;
+    text-align: center;
+}
+
+.checks {
+    width: 200px;
+    text-align: center;
+    padding: 0;
+}

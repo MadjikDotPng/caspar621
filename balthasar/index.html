@@ -1,0 +1,253 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="favicon.png">
+        <title>Home | Caspar621</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        
+    </head>
+
+    <body>
+        <div class="logincontainer" id="loginc">
+            <div id="login" class="login">
+                <p>Link your e621 account.</p>
+                <p class="subheader">Gain access to NSFW, favorites, interacting with posts, and more.</p>
+                <input type="text" id="user" class="loginuser" placeholder="Username">
+                <input type="text" id="apikey" class="loginuser" placeholder="E621 api key">
+                <button id="loginbutton" class="button">Save</button>
+                <button id="reset" class="button">Reset</button>
+                <button id="close" class="button">Close</button>
+            </div>
+        </div>
+        <!-- <div id="header">
+            <p class="Header" style="float:left">Caspar-621</p> <span class="left"><input type="text" id="tagz"> <button id="s">Search</button><input type="checkbox" id="sfw"></span>
+        </div> -->
+
+        <div class="sidenav">
+            <!-- <p class="Header">Caspar621</p> -->
+            <div class="hcontainer">
+                <img src="img/logo.png" class="headerimg">
+            </div>
+            <p class="subheading">Control Box</p>
+            <input type="text" id="tagz"> 
+                <button id="s" class="searchbutton" spellcheck="false" autocomplete="false" autocapitalize="false">Search</button>
+                <input style="display:none;" type="checkbox" id="sfw">
+                <br>
+                <button id="p" class="button">Previous</button> <button id="n" class="button">Next</button> 
+                <br><button id="b" class="b, button">Load Posts</button> <button id="u" class="button">Unload</button>
+                <br>
+                <br>
+                <div class="controlbox">
+                    <p id="safet">Presets</p>
+                    <p class="subheading" id="safesub">standard</p>
+                    <button onclick="load('')">New</button>
+                    <button onclick="/*stop()*/ load('sort:score:desc')">Top</button>
+                    <button onclick="load('sort:rank:desc')">Hot</button>
+                    <p class="subheading" id="safesub">advanced</p>
+                    <!-- do the stuff -->
+                    <button onclick="load('-animated')">Pics</button>
+                    <button onclick="/*stop()*/ load(1,'animated')">Videos</button>
+                    <button onclick="load('-animated+sort:score:desc')">Top Pics</button>
+                    <br><button onclick="load('animated+sort:score:desc')">Top Videos</button>
+                    <button onclick="load('sort:score:desc+gumi')">Debug</button>
+                </div>
+
+                <div class="userbox">
+                    <p class="logged">Thank you for using Balthasar~</p>
+                    <p class="perks">Your feedback means a lot!</p>
+                </div>
+          </div>
+
+        <div id="display" class="display"></div>
+        <p class="intro" id="intro">Search posts or choose a preset.</p>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
+        <script>
+            
+//const username = localStorage.getItem("username") || "caspar621";
+//const apiKey = localStorage.getItem("key") || "W8r6nDU97jXJfdhEfkxNpdjT"; // Not an actual API key lol
+let display = "";
+var pageNo = 0;
+var lastId = 0;
+currenttag = "";
+var checkBox = document.getElementById("sfw");
+var loginopen = false;
+var mainsearch = document.getElementById("tagz");
+var search = "";
+
+mainsearch.addEventListener("keyup", function(event) {
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        document.getElementById("s").click();
+    }
+});
+
+/* if (username == "caspar621") {
+    document.getElementById("perks").innerHTML = "If you want access to favorites, NSFW, <br> and post interactions, sign in below.";
+    document.getElementById("nsfw").style.display = "none";
+    document.getElementById("safet").innerHTML = "Default Presets";
+    document.getElementById("userid").innerHTML = "Logged out";
+} else {
+    document.getElementById("userid").innerHTML = "Logged into " + username;
+    document.getElementById("perks").innerHTML = "You are successfully using <br> your own account!";
+} */
+
+function openlogin() {
+    if (loginopen) {
+        document.getElementById("loginc").style.display = "none";
+        document.getElementById("login").style.display = "none";
+        loginopen = false;
+    } else {
+        document.getElementById("loginc").style.display = "flex";
+        document.getElementById("login").style.display = "block";
+        document.getElementById("intro").style.display = "none";
+
+        loginopen = true;
+    }
+}
+
+/* document.getElementById("loginbutton").addEventListener("click", () => {
+    var newkey = document.getElementById("apikey").value;
+    console.log(newkey)
+    localStorage.setItem("key", newkey);
+    var newuser = document.getElementById("user").value;
+    console.log(newuser)
+    localStorage.setItem("username", newuser);
+    location.reload();
+}); */
+
+/* function favorites() {
+    load(1,'fav:' + username)
+} */
+
+/*document.getElementById("reset").addEventListener("click", () => {
+    localStorage.setItem("key", "");
+    localStorage.setItem("username", "");
+    location.reload();
+});*/
+
+document.getElementById("close").addEventListener("click", () => {
+    document.getElementById("loginc").style.display = "none";
+    document.getElementById("login").style.display = "none";
+    loginopen = false;
+});
+
+document.getElementById("b").addEventListener("click", () => {
+    pageNo += 1;
+    load("");
+});
+
+document.getElementById("s").addEventListener("click", () => {
+    display = "";
+    pageNo = 0;
+    console.log(document.getElementById('tagz').value.replace(/ /g, '+'))
+    search = document.getElementById('tagz').value.replace(/ /g, '+');
+    //load(document.getElementById('tagz').value.replace(/ /g, '+') | "");
+    console.log(search)
+    load(search);
+});
+
+document.getElementById("n").addEventListener("click", () => {
+    pageNo += 1;
+    display = "";
+    console.log("Current tags are: " + currenttag);
+    load(currenttag);
+});
+
+document.getElementById("p").addEventListener("click", () => {
+    pageNo -= 1;
+    display = "";
+    console.log("Current tags are: " + currenttag);
+    load(currenttag);
+});
+
+document.getElementById("u").addEventListener("click", () => {
+    display = "";
+    document.getElementById("display").innerHTML = "";
+    document.getElementById("intro").style.display = "block";
+    document.getElementById("intro").innerHTML = "No posts to display.";
+});
+
+/* function stop() {
+    currenttag = 'rating:s+order:score';
+    console.log(currenttag);
+    load(0,currenttag)
+} */
+
+function openup(curl) {
+    window.open(curl, '_blank')
+}
+
+async function load(tag) {
+    document.getElementById("intro").style.display = "block";
+    document.getElementById("intro").innerHTML = "Loading Posts...";
+    let response = "";
+    console.log("Currenttag before loading: " + currenttag);
+    goTo = pageNo.toString();
+    currenttag = tag;
+    console.log("goto: " + goTo)
+    //let getTags = document.getElementById('tagz').value.replace(/ /g, '+') | "";
+    response = await fetch("https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&pid=" + goTo + "&json=1&limit=50&tags=" + tag, {
+    //headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
+    });
+    const final = await response.json();
+    console.log(final);
+    for (let i = 0; i < final.length; i++) {
+    //final.posts.map(() => {
+        document.getElementById("intro").style.display = "none";
+        //ipp = i
+        let imgid = final[i].id;
+        //let lastId = final.posts[19].id;
+        //console.log(lastId);
+        //let toBeDisplayed = final[i++].sample_url;
+        //    display += "<div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/></div>"
+        
+        let toBeDisplayed = final[i++].sample_url;
+        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/></div></a>"
+        
+        
+            // display += "<a href=" + toBeDisplayed + " target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+        // display += "<a href='/imgload.html?id=" + imgid + "' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+        // display += "<a onclick='openup(`imgload.html?id=" + imgid + "`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+        
+        /*if (final.posts[ipp].file.ext == "webm") {
+            //let toBeDisplayed = final.posts[i++].file.url;
+            //display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
+            let toBeDisplayed = final.posts[i++].sample.url;
+            var downv = final.posts[ipp].score.down;
+            var nonhyphen = downv.toString().split('-').join('');
+            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
+            //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
+        } else if (final.posts[ipp].file.ext == "gif") {
+            var downv = final.posts[ipp].score.down;
+            var nonhyphen = downv.toString().split('-').join('');
+            let toBeDisplayed = final.posts[i++].sample.url;
+            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #372c6b;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
+        } else if (final.posts[ipp].file.ext == "swf") {
+            var downv = final.posts[ipp].score.down;
+            var nonhyphen = downv.toString().split('-').join('');
+            let toBeDisplayed = final.posts[i++].sample.url;
+            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #555;'><img class='lazyload' src='/img/flash.png'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
+        } else {
+            var downv = final.posts[ipp].score.down;
+            var nonhyphen = downv.toString().split('-').join('');
+            let toBeDisplayed = final.posts[i++].sample.url;
+            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
+
+            //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
+        }*/
+        
+        // 75 e6 posts per page
+        // 131 e6 being loaded for some damn reason
+
+    //});
+
+    document.getElementById("display").innerHTML = display;
+}};
+        </script>
+    </body>
+</html>

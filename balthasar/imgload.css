@@ -1,0 +1,96 @@
+@import url(themes/theme.css);
+
+@font-face {
+    font-family: main;
+    src: url(fonts/main.ttf);
+}
+
+@font-face {
+    font-family: para;
+    src: url(fonts/para.ttf);
+}
+
+@font-face {
+    font-family: mono;
+    src: url(fonts/mono.ttf);
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #111; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #222; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #333; 
+    cursor: -webkit-grab; 
+    cursor: grab;
+}
+
+body {
+    background: var(--bgsecondary);
+    color: var(--text);
+    display: flexbox;
+    font-family: mono;
+    margin: 0;
+    line-height: 1;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-x: hidden;
+}
+
+img {
+    max-height: 90vh;
+    max-width: 40vw;
+}
+
+video {
+    max-height: 90vh;
+    max-width: 40vw;
+}
+
+#sampletxt {
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.imagetitle {
+    font-weight: bold;
+    /* margin-left: 10px; */
+    word-wrap: break-word;
+    line-height: 1;
+}
+
+.left {
+    float: left;
+    width: 40vw;
+    height: 100vh;
+    background: var(--bgsecondary);
+    margin: 0;
+}
+
+.right {
+
+    text-align: left;
+    float: right;
+    height: 100vh;
+    background: var(--bgsecondary);
+    margin: 0;
+    max-width: 55vw;
+}
+
+.scores {
+    font-size: 12px;
+    color: var(--subheader);
+    line-height: 1;
+}
