@@ -80,9 +80,10 @@ body {
 }
 
 .imgcon > img {
-    padding-top: 2em;
+    /* padding-top: 2em;
     padding-right: 2em;
-    padding-left: 2em;
+    padding-left: 2em;*/
+    padding: 2em;
     background: #000;
     transition: .3s;
     max-width: 60vh;
