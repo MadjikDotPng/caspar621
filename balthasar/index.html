@@ -207,7 +207,7 @@ async function load(tag) {
         //    display += "<div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/></div>"
         
         let toBeDisplayed = final[i++].sample_url;
-        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/></div></a>"
+        display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`imgload.html`);' target='_blank'><div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/></div></a>"
         
         
             // display += "<a href=" + toBeDisplayed + " target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
