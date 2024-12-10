@@ -102,6 +102,16 @@ var mainsearch = document.getElementById("tagz")
 var blacklist = localStorage.getItem("bblacklist") || "+-scat+-feces+-urine+-watersports";
 document.getElementById("blackinput").value = blacklist;
 console.log(blacklist);
+var islt = localStorage.getItem("lt");
+var ltt = localStorage.getItem("ltt");
+
+if (islt == 1) {
+    load(0,ltt);
+    localStorage.setItem("lt",0)
+    document.getElementById("tagz").value = ltt;
+} else {
+    console.log("not lt")
+}
 
 mainsearch.addEventListener("keyup", function(event) {
     // Number 13 is the "Enter" key on the keyboard

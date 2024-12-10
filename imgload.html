@@ -45,6 +45,7 @@
             const username = "caspar621";
             const apiKey = "W8r6nDU97jXJfdhEfkxNpdjT"; // Not an actual API key lol
             const theurl = window.location.href;
+            let gtags = "";
             /*function parse_url(url) {
             var pattern = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
             var matches =  url.match(pattern);
@@ -75,6 +76,7 @@
                 document.getElementById("sampletxt").innerHTML = "You are viewing the sample. <a href='" + final.post.file.url + "' target='_blank'>Click here</a> to view the full image.";
                 document.getElementById("fav").innerHTML = "Favorites: " + final.post.fav_count;
                 document.getElementById("idd").innerHTML = "Id: " + final.post.id;
+                document.getElementById("rate").innerHTML = "Rating: " + final.post.rating;
                 document.getElementById("stotal").innerHTML = "Score: " + final.post.score.total;
                 document.getElementById("sup").innerHTML = "Up: " + final.post.score.up;
                 document.getElementById("sdown").innerHTML = "Down: " + final.post.score.down;
@@ -90,17 +92,41 @@
 
                 } */
 
-                document.getElementById("artist").innerHTML = final.post.tags.artist;
                 if (final.post.description == "") {
                     document.title = "Post by " + final.post.tags.artist + " | Caspar621"; 
                 } else {
                     document.title = final.post.description + " | Caspar621"; 
-                }   
-                document.getElementById("character").innerHTML = final.post.tags.character;
-                document.getElementById("copy").innerHTML = final.post.tags.copyright;
-                document.getElementById("species").innerHTML = final.post.tags.species;
-                document.getElementById("gen").innerHTML = final.post.tags.general;
-                document.getElementById("meta").innerHTML = final.post.tags.meta;
+                }  
+                let atags = final.post.tags.artist;
+                for (let i = 0; i < atags.length; ++i) {
+                    const element = atags[i];
+                    document.getElementById("artist").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let stags = final.post.tags.species;
+                for (let i = 0; i < stags.length; ++i) {
+                    const element = stags[i];
+                    document.getElementById("species").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let gtags = final.post.tags.general;
+                for (let i = 0; i < gtags.length; ++i) {
+                    const element = gtags[i];
+                    document.getElementById("gen").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let ctags = final.post.tags.character;
+                for (let i = 0; i < ctags.length; ++i) {
+                    const element = ctags[i];
+                    document.getElementById("character").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let cptags = final.post.tags.copyright;
+                for (let i = 0; i < cptags.length; ++i) {
+                    const element = cptags[i];
+                    document.getElementById("copy").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let mtags = final.post.tags.meta;
+                for (let i = 0; i < mtags.length; ++i) {
+                    const element = mtags[i];
+                    document.getElementById("meta").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
 
                 if (final.post.file.ext == "webm") {
                     document.getElementById("display").innerHTML += "<video controls lazyload loop><source src=" + final.post.file.url + " type='video/webm'></video>"
@@ -109,6 +135,13 @@
                     document.getElementById("display").innerHTML += "<img class='lazyload' src='" + final.post.sample.url + "'/>";
                 }
             };
+            
+            function loadtag(tag) {
+                console.log(tag);
+                localStorage.setItem('lt',1);
+                localStorage.setItem('ltt',tag);
+                window.location.href = "/";
+            }
         </script>
     </body>
 </html>

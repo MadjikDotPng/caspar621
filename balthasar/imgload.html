@@ -6,11 +6,12 @@
     </head>
 
     <body>
-        <div class="titlebox"></div>
+        <div class="titlebox"></div> 
         <div class="left">
             <div id="display">
             </div>
             <p id="sampletxt">Viewing the sample. View the </p>
+            <button id="addf">Add to Favorites</button>
         </div>
 
         <div class="right">
@@ -52,6 +53,8 @@
                 response = await fetch("https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&id=" + id);
 
                 const final = await response.json();
+                theid = final[0].id;
+                console.log(theid)
                 console.log(final);
                 //document.getElementById("imagetitle").innerHTML = final.post.description;
                 document.getElementById("sampletxt").innerHTML = "You are viewing the sample. <a href='" + final[0].file_url + "' target='_blank'>Click here</a> to view the full image.";

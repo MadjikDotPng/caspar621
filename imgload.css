@@ -37,6 +37,10 @@
     cursor: grab;
 }
 
+a:hover {
+    cursor: pointer;
+}
+
 body {
     background: var(--bgsecondary);
     color: var(--text);
@@ -50,13 +54,13 @@ body {
 }
 
 img {
-    max-height: 90vh;
-    max-width: 40vw;
+    max-height: 200vh;
+    max-width: 70vw;
 }
 
 video {
     max-height: 90vh;
-    max-width: 40vw;
+    max-width: 70vw;
 }
 
 #sampletxt {
@@ -72,21 +76,22 @@ video {
 }
 
 .left {
-    float: left;
-    width: 40vw;
+    float: right;
+    width: 75vw;
     height: 100vh;
     background: var(--bgsecondary);
     margin: 0;
+    text-align: right;
 }
 
 .right {
 
     text-align: left;
-    float: right;
+    float: left;
     height: 100vh;
     background: var(--bgsecondary);
     margin: 0;
-    max-width: 55vw;
+    max-width: 20vw;
 }
 
 .scores {
