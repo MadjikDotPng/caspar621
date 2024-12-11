@@ -11,27 +11,13 @@
             <div id="display">
             </div>
             <p id="sampletxt">Viewing the sample. View the </p>
+            <div class="underpost">
+                <p id="info">N/A</p>
+            </div>
         </div>
 
         <div class="right">
-            <p>
-            <br>
-            <p id="imagetitle" class="imagetitle">
-                No Description
-            </p>
-            <br>
-            <p id="fav">Favorites: N/A</p>
-            <p id="idd">Id: N/A</p>
-            <p id="rate">Rating: Currently Broken</p>
-            <p id="stotal">Score: N/A</p>
-            <p id="sup" class="scores">Up: N/A</p>
-            <p id="sdown" class="scores">Down: N/A</p>
-            <p id="date">Created: N/A</p>
-            <p id="update" class="scores">Updated: N/A</p>
-            <p id="size">Size: N/A</p>
-            <p id="ssize" class="scores">Size: N/A</p>
-            <br><p class="imagetitle">Tags</p>
-            <br>
+            
             <p>Artist(s):</p><p class="scores" id="artist"> N/A</p>
             <p>Character(s):</p><p class="scores" id="character"> N/A</p>
             <p>Copyright:</p><p class="scores" id="copy"> N/A</p> 
@@ -72,20 +58,20 @@
 
                 const final = await response.json();
                 console.log(final);
-                document.getElementById("imagetitle").innerHTML = final.post.description;
-                document.getElementById("sampletxt").innerHTML = "You are viewing the sample. <a href='" + final.post.file.url + "' target='_blank'>Click here</a> to view the full image.";
-                document.getElementById("fav").innerHTML = "Favorites: " + final.post.fav_count;
-                document.getElementById("idd").innerHTML = "Id: " + final.post.id;
-                document.getElementById("rate").innerHTML = "Rating: " + final.post.rating;
-                document.getElementById("stotal").innerHTML = "Score: " + final.post.score.total;
-                document.getElementById("sup").innerHTML = "Up: " + final.post.score.up;
-                document.getElementById("sdown").innerHTML = "Down: " + final.post.score.down;
-                datef = new Date(final.post.created_at);
-                document.getElementById("date").innerHTML = "Created: " + datef;
-                udatef = new Date(final.post.created_at);
-                document.getElementById("update").innerHTML = "Updated: " + udatef;
-                document.getElementById("size").innerHTML = "Size: " + final.post.file.width + " x " + final.post.file.height;
-                document.getElementById("ssize").innerHTML = "Sample Size: " + final.post.sample.width + " x " + final.post.sample.height;
+                //document.getElementById("imagetitle").innerHTML = final.post.description;
+                document.getElementById("sampletxt").innerHTML = "You are viewing the sample. <a href='" + final.post.file.url + "' target='_blank'>Click here</a> to view the full image ("+ final.post.file.width + " x " + final.post.file.height + ").";
+                //document.getElementById("fav").innerHTML = "Favorites: " + final.post.fav_count;
+                //document.getElementById("idd").innerHTML = "Id: " + final.post.id;
+                //document.getElementById("rate").innerHTML = "Rating: " + final.post.rating;
+                //document.getElementById("stotal").innerHTML = "Score: " + final.post.score.total;
+                document.getElementById("info").innerHTML = final.post.score.total + "&uarr; - " + final.post.rating + " - " + final.post.fav_count + "&#9733; - " + final.post.id;
+                //document.getElementById("sup").innerHTML = "Up: " + final.post.score.up;
+                //document.getElementById("sdown").innerHTML = "Down: " + final.post.score.down;
+                //datef = new Date(final.post.created_at);
+                //document.getElementById("date").innerHTML = "Created: " + datef;
+                //udatef = new Date(final.post.created_at);
+                //document.getElementById("update").innerHTML = "Updated: " + udatef;
+                //document.getElementById("ssize").innerHTML = "Sample Size: " + final.post.sample.width + " x " + final.post.sample.height;
                 /* if (final.post.rating = "s") {
                     document.getElementById("rate").innerHTML = "Rating: Safe";
                 } elif {
@@ -103,7 +89,7 @@
                     document.getElementById("artist").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
                 }
                 let stags = final.post.tags.species;
-                for (let i = 0; i < stags.length; ++i) {
+                for (let i = 1; i < stags.length; ++i) {
                     const element = stags[i];
                     document.getElementById("species").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
                 }

@@ -54,13 +54,15 @@ body {
 }
 
 img {
+    max-width: 83vw;
     max-height: 200vh;
-    max-width: 70vw;
+    margin: 10px;
 }
 
 video {
-    max-height: 90vh;
-    max-width: 70vw;
+    max-width: 83vw;
+    max-height: 200vh;
+    margin: 10px;
 }
 
 #sampletxt {
@@ -75,9 +77,14 @@ video {
     line-height: 1;
 }
 
+.underpost {
+
+    padding: 10px;
+}
+
 .left {
     float: right;
-    width: 75vw;
+    width: 80vw;
     height: 100vh;
     background: var(--bgsecondary);
     margin: 0;
@@ -90,8 +97,9 @@ video {
     float: left;
     height: 100vh;
     background: var(--bgsecondary);
-    margin: 0;
-    max-width: 20vw;
+    margin: 10px;
+    max-width: 15vw;
+    
 }
 
 .scores {
