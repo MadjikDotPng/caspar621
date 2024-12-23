@@ -47,8 +47,30 @@
         var id = parse_url(theurl).query;
         console.log(id)
         var ret = id.replace('id=','');*/
-        var ret = localStorage.getItem("lastid");
-        load(ret);
+
+function parseURL(url) {
+    // Create a URL object to easily extract query parameters
+    const parsedURL = new URL(url);
+    
+    // Extract the values of 'search' and 'nsfw' parameters
+    const id = parsedURL.searchParams.get('id');
+    
+    // Decode URL-encoded strings (including '+' to spaces)
+    const decodedid = id ? decodeURIComponent(id.replace(/\+/g, ' ')) : null;
+    
+    // Create an object to store the results
+    const result = {
+        id: decodedid,
+    };
+    
+    return result;
+}
+
+// Example usage:
+const url = window.location.href;
+const parsedResult = parseURL(url);
+console.log(parsedResult);  // { search: 'example Query', nsfw: 'true' }
+load(parsedResult.id)
 
         async function load(id) {
                 let response = "";
@@ -124,9 +146,7 @@
             
             function loadtag(tag) {
                 console.log(tag);
-                localStorage.setItem('lt',1);
-                localStorage.setItem('ltt',tag);
-                window.location.href = "/";
+                window.location.href = window.location.href.replace("/imgload.html","?search="+ tag + "&nsfw=yes");
             }
         </script>
     </body>

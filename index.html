@@ -84,7 +84,6 @@
                     <button onclick="openblack()">Edit Blacklist</button>
                 </div>
           </div>
-
         <div id="display" class="display"></div>
         <p class="intro" id="intro">Search posts or choose a preset.</p>
         <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
@@ -100,18 +99,57 @@ var checkBox = document.getElementById("sfw");
 var loginopen = false;
 var mainsearch = document.getElementById("tagz")
 var blacklist = localStorage.getItem("bblacklist") || "+-scat+-feces+-urine+-watersports";
+var nextURL = '';
 document.getElementById("blackinput").value = blacklist;
 console.log(blacklist);
-var islt = localStorage.getItem("lt");
-var ltt = localStorage.getItem("ltt");
 
-if (islt == 1) {
-    load(0,ltt);
-    localStorage.setItem("lt",0)
-    document.getElementById("tagz").value = ltt;
-} else {
-    console.log("not lt")
+function parseURL(url) {
+    // Create a URL object to easily extract query parameters
+    const parsedURL = new URL(url);
+    
+    // Extract the values of 'search' and 'nsfw' parameters
+    const searchQuery = parsedURL.searchParams.get('search');
+    const nsfwQuery = parsedURL.searchParams.get('nsfw');
+    
+    // Decode URL-encoded strings (including '+' to spaces)
+    const decodedSearchQuery = searchQuery ? decodeURIComponent(searchQuery.replace(/\+/g, ' ')) : null;
+    const decodedNsfwQuery = nsfwQuery ? decodeURIComponent(nsfwQuery.replace(/\+/g, ' ')) : null;
+    // Create an object to store the results
+    const result = {
+        search: decodedSearchQuery,
+        nsfw: decodedNsfwQuery
+    };
+    
+    return result;
 }
+
+// Example usage:
+const url = window.location.href;
+const parsedResult = parseURL(url);
+console.log(parsedResult);  // { search: 'example Query', nsfw: 'true' }
+
+if (parsedResult) {
+    if (parsedResult.nsfw == "yes") {
+        if (username == "caspar621") {
+            console.log('URL is NSFW. User is SFW.');
+            alert("The URL you clicked on has a search query that is NSFW. You do not have access to this as a visitor. Please log in to your e621 to view the NSFW or continue to view SFW.");
+            load(0,parsedResult.search)
+            document.getElementById("tagz").value = parsedResult.search;
+        } else {
+            console.log('URL is NSFW. User is NSFW.');
+            load(0,parsedResult.search)
+            document.getElementById("tagz").value = parsedResult.search;
+        }
+    }
+    if (parsedResult.nsfw == "no") {
+        console.log('URL is SFW.');
+        const sfws = parsedResult.search + " rating:s"
+        load(0,sfws)
+        document.getElementById("tagz").value = parsedResult.search;
+    }
+    } else {
+        console.log('url empty')
+    }
 
 mainsearch.addEventListener("keyup", function(event) {
     // Number 13 is the "Enter" key on the keyboard
@@ -238,6 +276,23 @@ function openup(curl) {
 }
 
 async function load(page, tag) {
+    if (tag != '') {
+        document.getElementById('tagz').value = '';
+    }
+    if (username == 'caspar621') {
+        var nextURL = 'http://localhost:5173/?search=' + document.getElementById('tagz').value.replace(/ /g, '+') + "&nsfw=no";
+    } else {
+        var nextURL = 'http://localhost:5173/?search=' + document.getElementById('tagz').value.replace(/ /g, '+') + "&nsfw=yes";
+    }
+    const nextTitle = tag + " | Caspar621";
+    const nextState = { additionalInformation: 'Updated the URL with JS' };
+
+    // This will create a new entry in the browser's history, without reloading
+    window.history.pushState(nextState, nextTitle, nextURL);
+
+    // This will replace the current entry in the browser's history, without reloading
+    window.history.replaceState(nextState, nextTitle, nextURL);
+
     document.getElementById("intro").style.display = "block";
     document.getElementById("intro").innerHTML = "Loading Posts...";
     let response = "";
@@ -279,9 +334,9 @@ async function load(page, tag) {
             var downv = final.posts[ipp].score.down;
             var nonhyphen = downv.toString().split('-').join('');
             if (final.posts[ipp].tags.artist.includes('sound_warning') || final.posts[ipp].tags.meta.includes('sound')) {
-                display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span><span style='color: #555;'> | Sound</span></p></div></a>"
+                display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span><span style='color: #555;'> | Sound</span></p></div></a>"
             } else {
-                display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
+                display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><div class='imgcon' style='border-color: #6b2c2c;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
             };
             
             //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><video controls lazyload><source src=" + toBeDisplayed + " type='video/webm'></video></a>"
@@ -289,17 +344,17 @@ async function load(page, tag) {
             var downv = final.posts[ipp].score.down;
             var nonhyphen = downv.toString().split('-').join('');
             let toBeDisplayed = final.posts[i++].sample.url;
-            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #372c6b;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
+            display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><div class='imgcon' style='border-color: #372c6b;'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #555;'>Animated | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
         } else if (final.posts[ipp].file.ext == "swf") {
             var downv = final.posts[ipp].score.down;
             var nonhyphen = downv.toString().split('-').join('');
             let toBeDisplayed = final.posts[i++].sample.url;
-            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon' style='border-color: #555;'><img class='lazyload' src='/img/flash.png'/><p><span style='color: #555;'>Flash | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
+            display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><div class='imgcon' style='border-color: #555;'><img class='lazyload' src='/img/flash.png'/><p><span style='color: #555;'>Flash | </span><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>" 
         } else {
             var downv = final.posts[ipp].score.down;
             var nonhyphen = downv.toString().split('-').join('');
             let toBeDisplayed = final.posts[i++].sample.url;
-            display += "<a onclick='localStorage.setItem(`lastid`," + imgid + ");openup(`/imgload.html`);' target='_blank'><div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
+            display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><div class='imgcon'><img class='lazyload' src='" + toBeDisplayed + "'/><p><span style='color: #388f3b;'>&uarr; " + final.posts[ipp].score.up + "</span> <span style='color: #bf3939;'>&darr; " + nonhyphen + "</span></p></div></a>"
 
             //display += "<a onclick='openup(`/imgload.html?id=" + imgid + "`);' target='_blank'><img class='lazyload' src='" + toBeDisplayed + "'/></a>"
         }
@@ -311,6 +366,8 @@ async function load(page, tag) {
 
     document.getElementById("display").innerHTML = display;
 }};
+
+
         </script>
     </body>
 </html>
