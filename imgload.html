@@ -31,6 +31,7 @@
             const username = "caspar621";
             const apiKey = "W8r6nDU97jXJfdhEfkxNpdjT"; // Not an actual API key lol
             let gtags = "";
+            let toload = localStorage.getItem('lid');
             /*function parse_url(url) {
             var pattern = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
             var matches =  url.match(pattern);
@@ -46,7 +47,7 @@
         var id = parse_url(theurl).query;
         console.log(id)
         var ret = id.replace('id=','');*/
-
+/*
 function parseURL(url) {
     // Create a URL object to easily extract query parameters
     const parsedURL = new URL(url);
@@ -70,7 +71,9 @@ const url = window.location.href;
 const parsedResult = parseURL(url);
 console.log(parsedResult);  // { search: 'example Query', nsfw: 'true' }
 load(parsedResult.id)
+*/
 
+load(toload)
         async function load(id) {
                 let response = "";
                 response = await fetch("https://e621.net/posts/" + id + ".json", {
