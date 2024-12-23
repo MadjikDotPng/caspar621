@@ -272,7 +272,8 @@ document.getElementById("u").addEventListener("click", () => {
 } */
 
 function openup(curl) {
-    window.location.href = curl;
+    console.log(curl);
+    window.open(curl, '_blank').focus();
 }
 
 async function load(page, tag) {
