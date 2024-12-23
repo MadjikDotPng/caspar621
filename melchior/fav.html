@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="fav.css">
+    </head>
+
+    <body>
+        <div id="display">
+            
+        </div>
+        <a onclick="prev()">Prev</a><a onclick="next()">Next</a>
+        <script>
+            //var favs = ["9017636","7439569","3726686"];
+            var favs = JSON.parse(localStorage.getItem("favs"));
+            var current = 0;
+
+            function next() {
+                current += 1;
+                document.getElementById("display").innerHTML = "";
+                load(favs[current]);
+            }
+
+            function prev() {
+                current -= 1;
+                document.getElementById("display").innerHTML = "";
+                load(favs[current]);
+            }
+
+            async function load(id) {
+                let response = "";
+                response = await fetch("https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&id=" + id);
+
+                const final = await response.json();
+                console.log(final);
+                if (final[0].file_url.includes('.mp4') || final[0].file_url.includes('.webm')) {
+                    document.getElementById("display").innerHTML += "<video controls lazyload loop><source src=" + final[0].file_url + " type='video/webm'></video>";
+                } else {
+                    document.getElementById("display").innerHTML += "<img class='lazyload' src='" + final[0].sample_url + "'/>";
+                }
+                
+            }
+
+            load(favs[0])
+        </script>
+    </body>
+</html>

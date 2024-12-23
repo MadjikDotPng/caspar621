@@ -1,0 +1,15 @@
+:root {  
+    --bg: #000;  
+    --bgsecondary: #111;
+    --navbar: #111;
+    --navbartop: #102A4E;
+    --resultborder: #222;
+    --text: #DDD;  
+    --textsecondary: #AAA;
+    --subheader: #777;
+    --white: #fff;
+    --button: #222;
+    --login: #FFF9E0;
+    --buttontext: #ddd;
+    --footer: #2F2F2F;
+  }
