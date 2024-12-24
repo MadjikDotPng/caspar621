@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="imgload.css">
+        <link rel="icon" href="favicon.png">
+        <title>Loading Post... | Caspar621</title>
+    </head>
+
+    <body>
+        <div class="titlebox"></div>
+        <div class="left">
+            <div id="display">
+            </div>
+            <p id="sampletxt">Viewing the sample. View the </p>
+            <div class="underpost">
+                <p id="info">N/A</p>
+            </div>
+        </div>
+
+        <div class="right">
+            
+            <p>Artist(s):</p><p class="scores" id="artist"> N/A</p>
+            <p>Character(s):</p><p class="scores" id="character"> N/A</p>
+            <p>Copyright:</p><p class="scores" id="copy"> N/A</p> 
+            <p>Species:</p><p class="scores" id="species"> N/A</p>
+            <p>General:</p><p class="scores" id="gen"> N/A</p>
+            <p>Meta:</p><p class="scores" id="meta"> N/A</p> 
+        </p>
+        </div>
+
+        <script>
+            const username = "caspar621";
+            const apiKey = "W8r6nDU97jXJfdhEfkxNpdjT"; // Not an actual API key lol
+            let gtags = "";
+            let toload = localStorage.getItem('lid');
+            /*function parse_url(url) {
+            var pattern = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+            var matches =  url.match(pattern);
+            return {
+                scheme: matches[2],
+                authority: matches[4],
+                path: matches[5],
+                query: matches[7],
+                fragment: matches[9]
+            };
+        }
+        console.log(parse_url(theurl));
+        var id = parse_url(theurl).query;
+        console.log(id)
+        var ret = id.replace('id=','');*/
+/*
+function parseURL(url) {
+    // Create a URL object to easily extract query parameters
+    const parsedURL = new URL(url);
+    
+    // Extract the values of 'search' and 'nsfw' parameters
+    const id = parsedURL.searchParams.get('id');
+    
+    // Decode URL-encoded strings (including '+' to spaces)
+    const decodedid = id ? decodeURIComponent(id.replace(/\+/g, ' ')) : null;
+    
+    // Create an object to store the results
+    const result = {
+        id: decodedid,
+    };
+    
+    return result;
+}
+
+// Example usage:
+const url = window.location.href;
+const parsedResult = parseURL(url);
+console.log(parsedResult);  // { search: 'example Query', nsfw: 'true' }
+load(parsedResult.id)
+*/
+
+load(toload)
+        async function load(id) {
+                let response = "";
+                response = await fetch("https://e621.net/posts/" + id + ".json", {
+                headers: { "Authorization": "Basic " + btoa(`${username}:${apiKey}`) }
+                });
+
+                const final = await response.json();
+                console.log(final);
+                //document.getElementById("imagetitle").innerHTML = final.post.description;
+                document.getElementById("sampletxt").innerHTML = "You are viewing the sample. <a href='" + final.post.file.url + "' target='_blank'>Click here</a> to view the full image ("+ final.post.file.width + " x " + final.post.file.height + ").";
+                //document.getElementById("fav").innerHTML = "Favorites: " + final.post.fav_count;
+                //document.getElementById("idd").innerHTML = "Id: " + final.post.id;
+                //document.getElementById("rate").innerHTML = "Rating: " + final.post.rating;
+                //document.getElementById("stotal").innerHTML = "Score: " + final.post.score.total;
+                document.getElementById("info").innerHTML = final.post.score.total + "&uarr; - " + final.post.rating + " - " + final.post.fav_count + "&#9733; - " + final.post.id;
+                //document.getElementById("sup").innerHTML = "Up: " + final.post.score.up;
+                //document.getElementById("sdown").innerHTML = "Down: " + final.post.score.down;
+                //datef = new Date(final.post.created_at);
+                //document.getElementById("date").innerHTML = "Created: " + datef;
+                //udatef = new Date(final.post.created_at);
+                //document.getElementById("update").innerHTML = "Updated: " + udatef;
+                //document.getElementById("ssize").innerHTML = "Sample Size: " + final.post.sample.width + " x " + final.post.sample.height;
+                /* if (final.post.rating = "s") {
+                    document.getElementById("rate").innerHTML = "Rating: Safe";
+                } elif {
+
+                } */
+
+                if (final.post.description == "") {
+                    document.title = "Post by " + final.post.tags.artist + " | Caspar621"; 
+                } else {
+                    document.title = final.post.description + " | Caspar621"; 
+                }  
+                let atags = final.post.tags.artist;
+                for (let i = 0; i < atags.length; ++i) {
+                    const element = atags[i];
+                    document.getElementById("artist").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let stags = final.post.tags.species;
+                for (let i = 1; i < stags.length; ++i) {
+                    const element = stags[i];
+                    document.getElementById("species").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let gtags = final.post.tags.general;
+                for (let i = 0; i < gtags.length; ++i) {
+                    const element = gtags[i];
+                    document.getElementById("gen").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let ctags = final.post.tags.character;
+                for (let i = 0; i < ctags.length; ++i) {
+                    const element = ctags[i];
+                    document.getElementById("character").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let cptags = final.post.tags.copyright;
+                for (let i = 0; i < cptags.length; ++i) {
+                    const element = cptags[i];
+                    document.getElementById("copy").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+                let mtags = final.post.tags.meta;
+                for (let i = 0; i < mtags.length; ++i) {
+                    const element = mtags[i];
+                    document.getElementById("meta").innerHTML += "<br><a onclick='loadtag(`" + element + "`)'>" + element + "</a>, "
+                }
+
+                if (final.post.file.ext == "webm") {
+                    document.getElementById("display").innerHTML += "<video controls lazyload loop><source src=" + final.post.file.url + " type='video/webm'></video>"
+
+                } else {
+                    document.getElementById("display").innerHTML += "<img class='lazyload' src='" + final.post.sample.url + "'/>";
+                }
+            };
+            
+            function loadtag(tag) {
+                console.log(tag);
+                window.location.href = window.location.href.replace("/imgload.html","?search="+ tag + "&nsfw=yes");
+            }
+        </script>
+    </body>
+</html>
