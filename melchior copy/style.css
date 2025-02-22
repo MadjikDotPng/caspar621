@@ -120,15 +120,16 @@ body {
 }
 
 .headerimg {
-    height: 20px;
+    height: 22px;
     margin-bottom: 0px;
     margin-top: 0px;
     text-align: center;
-    padding-top: 18px;
+    padding-top: 15px;
+    padding-bottom: 10px;
 }
 
 .hcontainer {
-    background: var(--navbartop);
+    background: #1e1e2c;
     height: 50px;
 }
 
@@ -178,7 +179,16 @@ input:focus {
     margin: 6px;
 }
 
-
+#blacklist {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #111;
+    width: 30vw;
+    height: 30vh;
+    display: none;
+}
 
 button:hover {
     cursor: pointer;
@@ -292,17 +302,6 @@ button:hover {
     display: none;
 }
 
-#blacklist {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: #111;
-    width: 30vw;
-    height: 30vh;
-    display: none;
-}
-
 .navfooter {
 
 }
@@ -312,21 +311,6 @@ button:hover {
     left: 55%;
     top: 50%;
     transform: translate(-50%, -50%);
-}
-
-. {
-    position: absolute;
-    left: 55%;
-    top: 5%;
-    transform: translate(-50%, -50%);
-}
-
-.topbar {
-    position: sticky;
-    top: 0;
-    height: 50px;
-    background: var(--navbartop);
-    color: #f1f1f1;
 }
 
 .logged {
@@ -350,27 +334,4 @@ button:hover {
     width: 200px;
     text-align: center;
     padding: 0;
-}
-
-.tbutton {
-    outline: none;
-    background: #0c1d36;
-    box-shadow: none;
-    border-style: none;
-    color: var(--buttontext);
-    margin-top: 15px;
-    width: 100px;
-    font-family: "para", sans-serif;
-    border-bottom-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.tbarinside {
-    margin-left: 10em;
-}
-
-.pageno {
-    font-weight: 900;
-    padding-right: 20px;
-    padding-left: 20px;
 }

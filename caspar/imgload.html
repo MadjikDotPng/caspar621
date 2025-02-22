@@ -14,6 +14,7 @@
             <div class="underpost">
                 <p id="info">N/A</p>
             </div>
+            <button onclick="saveimage()">save</button>
         </div>
 
         <div class="right">
@@ -32,6 +33,7 @@
             const apiKey = "W8r6nDU97jXJfdhEfkxNpdjT"; // Not an actual API key lol
             let gtags = "";
             let toload = localStorage.getItem('lid');
+            let fileurl = "";
             /*function parse_url(url) {
             var pattern = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
             var matches =  url.match(pattern);
@@ -83,7 +85,8 @@ load(toload)
                 const final = await response.json();
                 console.log(final);
                 //document.getElementById("imagetitle").innerHTML = final.post.description;
-                document.getElementById("sampletxt").innerHTML = "You are viewing the sample. <a href='" + final.post.file.url + "' target='_blank'>Click here</a> to view the full image ("+ final.post.file.width + " x " + final.post.file.height + ").";
+                document.getElementById("sampletxt").innerHTML = "You are viewing the sample. <a href='" + final.post.file_url + "' target='_blank'>Click here</a> to view the full image ("+ final.post.file.width + " x " + final.post.file.height + ").";
+                fileurl = final.post.file_url;
                 //document.getElementById("fav").innerHTML = "Favorites: " + final.post.fav_count;
                 //document.getElementById("idd").innerHTML = "Id: " + final.post.id;
                 //document.getElementById("rate").innerHTML = "Rating: " + final.post.rating;
@@ -150,6 +153,35 @@ load(toload)
                 console.log(tag);
                 window.location.href = window.location.href.replace("/imgload.html","?search="+ tag + "&nsfw=yes");
             }
+
+const img = new Image
+const c = document.createElement('canvas')
+const ctx = c.getContext('2d')
+
+function setCanvasImage(path,func){
+    img.onload = function(){
+        c.width = this.naturalWidth
+        c.height = this.naturalHeight
+        ctx.drawImage(this,0,0)
+        c.toBlob(blob=>{
+            func(blob)
+        },'image/png')
+    }
+    img.src = path
+}
+
+function saveimage() {
+    setCanvasImage(fileurl,(imgBlob)=>{
+    console.log('doing it!')
+    navigator.clipboard.write(
+        [
+            new ClipboardItem({'image/png': imgBlob})
+        ]
+    )
+    .then(e=>{console.log('Image copied to clipboard')})
+    .catch(e=>{console.log(e)})
+})
+}
         </script>
     </body>
 </html>

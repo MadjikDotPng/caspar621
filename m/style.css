@@ -1,5 +1,3 @@
-@import url(themes/theme.css);
-
 @font-face {
     font-family: main;
     src: url(fonts/main.ttf);
@@ -37,6 +35,7 @@ body {
     color: var(--text);
     display: flexbox;
     margin: 0;
+    font-size: 12px;
     text-align: center;
     font-family: "para", sans-serif;
 }
@@ -54,10 +53,9 @@ body {
   }
 
 .display {
-    width: 90vw;
+    width: 100vw;
     text-align: center;
     max-width: fit-content;
-    margin-left: 240px;
     margin-right: auto;
     display: flex;
     flex-wrap: wrap;
@@ -81,11 +79,9 @@ body {
 
 .imgcon > img {
     padding-top: 2em;
-    padding-right: 2em;
-    padding-left: 2em;
     background: #000;
     transition: .3s;
-    max-width: 60vh;
+    max-width: 100vw;
     max-height: 40vh;
     /* image-rendering: pixelated; */
 }
@@ -134,10 +130,11 @@ body {
 
 
 #s {
+    width: 100vw;
+    height: 5vh;
     border-bottom-left-radius: 25px;
-    width: 200px;;
     outline: none;
-    background: var(--button);
+    background: #444;
     box-shadow: none;
     border-style: none;
     color: var(--buttontext);
@@ -151,13 +148,14 @@ body {
 }
 
 input {
+    width: 100vw;
+    height: 5vh;
     outline: none;
     box-shadow: none;
-    width: 200px;
     border-top-right-radius: 25px;
-    background: var(--button);
+    background: #555;
     border-style: none;
-    color: var(--buttontext);
+    color: #fff;
 }
 
 input:focus {
@@ -176,6 +174,10 @@ input:focus {
     color: #ddd;
     text-align: center;
     margin: 6px;
+}
+
+.controls {
+    width: 100vw;
 }
 
 
@@ -314,21 +316,6 @@ button:hover {
     transform: translate(-50%, -50%);
 }
 
-. {
-    position: absolute;
-    left: 55%;
-    top: 5%;
-    transform: translate(-50%, -50%);
-}
-
-.topbar {
-    position: sticky;
-    top: 0;
-    height: 50px;
-    background: var(--navbartop);
-    color: #f1f1f1;
-}
-
 .logged {
     margin: 5px;
     margin-top: 20px;
@@ -350,27 +337,4 @@ button:hover {
     width: 200px;
     text-align: center;
     padding: 0;
-}
-
-.tbutton {
-    outline: none;
-    background: #0c1d36;
-    box-shadow: none;
-    border-style: none;
-    color: var(--buttontext);
-    margin-top: 15px;
-    width: 100px;
-    font-family: "para", sans-serif;
-    border-bottom-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.tbarinside {
-    margin-left: 10em;
-}
-
-.pageno {
-    font-weight: 900;
-    padding-right: 20px;
-    padding-left: 20px;
 }
